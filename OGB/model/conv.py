@@ -285,17 +285,7 @@ class MultiHeadAttention(nn.Module):
         x = th.matmul(q, k)  # [b, h, q_len, k_len]
         if attn_bias is not None:
             x = x + attn_bias
-        # x = x / 0.1 # temperature = 0.1
         x = th.softmax(x, dim=3)
-        # print('attention matrix:\n', x)
-        # if epoch == 60 :
-        #     if self.training:
-        #         data = x[5000:5020].squeeze(1).detach().cpu()
-        #         th.save(data,'attention_matrix_train.pt')
-        #     else:
-        #         data = x[5000:5020].squeeze(1).detach().cpu()
-        #         th.save(data,'attention_matrix_val.pt')
-            
         
         x = self.att_dropout(x)
         x = x.matmul(v)  # [b, h, q_len, attn]
